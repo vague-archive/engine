@@ -1,0 +1,13 @@
+get_world_offset = """
+return vec2f(0., 0.);
+"""
+
+get_fragment_color = """
+return vertex_color * textureSample(color_tex, sampler_color_tex, uv0.xy);
+"""
+
+[uniform_types]
+color_param_1 = "vec4f"
+
+[texture_descs]
+color_tex = "linear"

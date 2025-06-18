@@ -1,0 +1,260 @@
+//! # IPC (Inter Process Communication) flatbuffer schema.
+//!
+//! This schema defines the commands to/from the IPC host module and related IPC
+//! agent modules. (See [`../README.md`] for more).
+//!
+//! These are packages (or parcels or envelopes) in which game messages are
+//! sent. They are *not* the in-game messages themselves.
+//!
+//! Think of a parcel service such as FedEx, UPS, DHL, or USPS. A customer gives
+//! them a box to deliver and they make that happen. In this interface, the
+//! `Message` structure (below) is like the "box" that holds the actual content
+//! (the game data). The currier doesn't know what's in the "box" (the
+//! `Message`).
+//!
+//! ## Terms:
+//!
+//! In this protocol:
+//! - `port` is a literal TCP port number (which may have restrictions based on
+//!   the platform/OS)
+//! - `channel` is an internal concept used as a shorthand to uniquely identify
+//!   a connection and related events (Opened, Message, Close, and Closed).
+//! - `user_id` information passed between the IPC Agent Module and IPC Host
+//!   Module for the purpose of disambiguating Fiasco events.
+//!
+//! See [`../README.md`] for definitions of IPC Client, Host, and Agent.
+//!
+//! ## Usage:
+//!
+//! The first event to send is `PortListen`. At some point later, a
+//! `PortListenResult` may be received. If so, a variety of the following may be
+//! received:
+//!
+//! - `Opened`
+//! - `Message`
+//! - `Closed`
+//! - `PortIgnored`
+//!
+//! Between receiving `Opened` and `Closed` for a given `channel`, a game may
+//! send `Message`s for that channel. At any point after a `PortListenResult` a
+//! game may send `PortIgnore` for the same port.
+//!
+//! ### Missing `Open` event?
+//!
+//! This interface does not currently offer outbound (client) connections to a
+//! WebSocket server (host). If that feature is added in the future, then an
+//! `Open` event should be added.
+//!
+//! ### Events are broadcast
+//!
+//! Events between Fiasco modules are broadcast. Meaning that module A and
+//! module B don't send events directly to each other. Module A may send an
+//! event to all modules and module B may respond by sending events to all
+//! modules. This means that module C will see every message sent (even though
+//! it is not the intended recipient). Each module (such as module C) is
+//! responsible for discarding events which it is not interested in.
+//!
+//! This may have security or PII (personally identifiable information)
+//! implications which are the responsibility of callers to manage and protect.
+//!
+//! This broadcast behavior is not specific to this interface.
+
+
+/// Request that a port be opened to listen for Opens.
+//
+/// This may be sent by the IPC Agent Module, never received from the IPC Host
+/// Module. Note: Events are broadcast, so you may see events intended for
+/// another module, including this event.
+///
+/// Valid port numbers match the range of valid general use TCP/IP port numbers.
+/// Values between 1024 to 49151 are reasonable choices. The important thing is
+/// that the *other* program trying to connect must know the chosen value. Pick
+/// something and document it.
+///
+/// - `port` the TCP/IP port number to listen on for incoming Opens.
+/// - `user_id` is any user data. The intent is to match the request to
+///             PortListen with a specific IPC Agent Module by passing the
+///             module string name.
+table PortListen {
+    port: uint16;
+    // TODO(https://github.com/vaguevoid/engine/issues/320): Remove user_id.
+    user_id: string;
+}
+
+/// Result values for listening on a port.
+enum PortListenResultCode: uint8 {
+    /// The `port` was opened successfully.
+    Success = 0,
+
+    /// Unspecified failure. There's no action the game or user may reasonably
+    /// take to address the problem.
+    GeneralFailure = 1,
+
+    /// The port is already in use. If this program is the one using it,
+    /// consider freeing it and trying again.
+    InUseFailure = 2,
+
+    /// This program doesn't have access rights to the hardware interface.
+    NoPermissionFailure = 3,
+}
+
+/// Response from the IPC Host Module for a PortListen.
+///
+/// Receive only, not sent by the IPC Agent Module.
+///
+/// If the `user_id` string does not match the value used in `PortListen` then
+/// this event should be discarded. Events are broadcast, so you may see events
+/// intended for another module.
+///
+/// - `port` if result says it was successful, this will match the requested
+///          port used in the PortListen.
+/// - `user_id` verbatim copy of the `user_id` passed to the `PortListen`
+///             request. this is used to disambiguate two callers (IPC Agent
+///             Modules) asking to listen on the same port at the same time.
+/// - `result` indicates whether a PortListen request was successful; or an
+///            indication of why it failed.
+table PortListenResult {
+    port: uint16;
+    // TODO(https://github.com/vaguevoid/engine/issues/320): Remove user_id.
+    user_id: string;
+    result: PortListenResultCode;
+}
+
+/// Another (client) program has connected, a channel has opened.
+///
+/// Receive only, not sent by the IPC Agent Module.
+///
+/// This is a heads-up that a connection was made. This along with the matching
+/// `Closed` messages gives the IPC Agent Module a chance to allocate or free
+/// per connection data.
+///
+/// - `port` if result says it was successful, this will match the requested
+///          port used in the PortListen.
+/// - `user_id` verbatim copy of the `user_id` passed to the `PortListen`
+///             request. this is used to disambiguate two callers (IPC Agent
+///             Modules) asking to open the same port at the same time.
+/// - `channel` a unique identifier used in related `Message` and `Close`
+///             events.
+///
+/// If the `user_id` string does not match the value used in `PortListen` then
+/// this event should be discarded. Events are broadcast, so you may see events
+/// intended for another module.
+///
+/// Store the `channel` for later use with Message and Closed events.
+table Opened {
+    port: uint16;
+    // TODO(https://github.com/vaguevoid/engine/issues/320): Remove user_id.
+    user_id: string;
+    channel: uint16;
+}
+
+/// A message which may be sent or received.
+///
+/// The same format is used for both inbound and outbound messages. There are
+/// two different message types to account for the Fiasco event broadcast.
+///
+/// This may be sent by the IPC Agent Module or received from the IPC Host
+/// Module. These messages should only occur between an `Opened` and a `Closed`
+/// event. If the `channel` does not match the value received in `Opened` then
+/// this event should be discarded. Note: Events are broadcast, so you may see
+/// events intended for another module, including this event.
+///
+/// It is an error to send a `Message` on a channel with no connection (not
+/// Opened or which has been Closed), doing so may cause the IPC Host Module
+/// silently drop the message.
+///
+/// - `channel` is the value received in an Opened event.
+/// - `content` is the custom payload for the game (it is opaque to the IPC Host
+///             Module). Parse it as appropriate.
+table MessageFromRemote {
+    channel: uint16;
+	content: [uint8] (native_type: "byte");
+}
+table MessageToRemote {
+    channel: uint16;
+	content: [uint8] (native_type: "byte");
+}
+
+/// The client is no longer connected, the channel is closed.
+///
+/// This may be sent by the IPC Agent Module, never received from the IPC Host
+/// Module. Note: Events are broadcast, so you may see events intended for
+/// another module, including this event.
+///
+/// There's no information given about why the connection closed. No further
+/// messages for that channel will be sent. Some residual events may be received
+/// for the channel (those which are 'in-flight' between the time this event is
+/// sent and when the `Closed` event is received from the IPC Host Module).
+///
+/// A `Closed` event will arrive later, as a confirmation that the `Close` event
+/// has been acted upon.
+///
+/// - `channel` is the value received in an `Opened` event.
+struct Close {
+    channel: uint16;
+}
+
+/// The client is no longer connected, the channel is closed.
+///
+/// Receive only, not sent by the IPC Agent Module. (send `Close` instead).
+/// Note: Events are broadcast, so you may see events intended for another
+/// module, including this event.
+///
+/// An `Opened` event should always be received prior to receiving the matching
+/// `Closed` event. A `Closed` event may arrive for a channel which `Close` has
+/// not been requested (i.e. the client may initiate the close, so the IPC Agent
+/// Module will only see a `Closed` in that case).
+///
+/// Common reasons for a connection being Closed are: the user closed the
+/// program, the network cable is unplugged, the connection timed out, there is
+/// an ISP outage, etc. Regardless, there's nothing the receiver (Fiasco module)
+/// can reasonably act upon and often cannot reasonably know why the
+/// disconnection happened.
+///
+/// There's no information given about why the connection closed. No further
+/// messages related to that Opened event will be sent or received.
+///
+/// All state related to the channel should be discarded. A new Open may begin
+/// on the same open channel, in the future.
+///
+/// - `channel` is the value received in an `Opened` event.
+struct Closed {
+    channel: uint16;
+}
+
+/// Request that a previously listened to port be freed.
+///
+/// This may be sent by the IPC Agent Module, never received from the IPC Host
+/// Module. Note: Events are broadcast, so you may see events intended for
+/// another module, including this event.
+///
+/// Additional connections (`Opened` events) may be received while this event is
+/// in-flight to the IPC Host Module.
+///
+/// - `port` is the value used in PortListen (and PortListenResult).
+table PortIgnore {
+    port: uint16;
+    // TODO(https://github.com/vaguevoid/engine/issues/320): Remove user_id.
+    user_id: string;
+}
+
+/// A previously listened to port has been freed.
+///
+/// Receive only, not sent by the IPC Agent Module. (Send `PortIgnore` instead).
+/// Note: Events are broadcast, so you may see events intended for another
+/// module, including this event.
+///
+/// This is a response and acknowledgement of a `PortIgnore` being received by
+/// the IPC Host Module. Receiving a `PortIgnored` does not imply that the port
+/// was being listened to, per se. No further Message values will be received
+/// until a new `PortListen` is sent.
+///
+/// No further connections (`Opened` events) will be received on this port
+/// (until listened to again).
+///
+/// - `port` is the value used in PortListen.
+table PortIgnored {
+    port: uint16;
+    // TODO(https://github.com/vaguevoid/engine/issues/320): Remove user_id.
+    user_id: string;
+}

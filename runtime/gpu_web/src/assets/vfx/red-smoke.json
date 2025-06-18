@@ -1,0 +1,78 @@
+{
+	"effect_type": "TWO_D",
+	"emitters": [
+		{
+			"burst": 0,
+			"color": "e90f0ffd",
+			"duration": 0,
+			"end_size": 1,
+			"fade_in_time": 0.1979834691304,
+			"fade_out_time": 0.54,
+			"glow": 0,
+			"gravity": 0.187275331773779,
+			"lifetime": 1.39562955444602,
+			"max_rotation_s": 40.9303309639629,
+			"mesh_name": "None",
+			"min_rotation_s": -25.0618282852849,
+			"name": "Emitter 0",
+			"orientation": "BILLBOARD",
+			"pattern": "SPHERE",
+			"rate": 39.2527104680173,
+			"renderer_type": "SPRITE",
+			"size_multiplier": 3.39293348575405,
+			"spawning_mode": "FLOW",
+			"spawning_mode_BURST": false,
+			"spawning_mode_CONTINUOUS": true,
+			"speed": 0.282346486931737,
+			"spread": 56.0432636933437,
+			"start_rotation": 0,
+			"start_size": 0.244804133469204,
+			"textures": [
+				{
+					"glow": 0,
+					"speed_x": 0,
+					"speed_y": 0,
+					"texture_name": "Smoke7",
+					"tile_x": 1,
+					"tile_y": 1
+				},
+				{
+					"glow": 0,
+					"speed_x": 0.05,
+					"speed_y": 0.05,
+					"texture_name": "Noise71",
+					"tile_x": 2,
+					"tile_y": 2
+				},
+				{
+					"glow": 0,
+					"speed_x": 0.2,
+					"speed_y": -0.2,
+					"texture_name": "Glow2",
+					"tile_x": 0.5,
+					"tile_y": 0.5
+				}
+			],
+			"trail_lifetime": 0,
+			"trail_width": 0.05,
+			"transform_position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_rotation": {
+				"w": 1,
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			}
+		}
+	],
+	"file_type_version": 1,
+	"name": "Untitled Effect"
+}

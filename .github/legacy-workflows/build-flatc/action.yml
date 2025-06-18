@@ -1,0 +1,35 @@
+name: "Build flatc"
+
+runs:
+  using: "composite"
+
+  steps:
+    # Build `flatc`
+    - name: Checkout flatc
+      uses: actions/checkout@v4
+      with:
+        repository: vaguevoid/flatbuffers
+        path: flatbuffers
+
+    - name: Cache flatc build
+      id: cache-flatc
+      uses: actions/cache@v4
+      with:
+        path: ./flatc_build/flatc
+        key: ${{ runner.os }}-flatc-${{ hashFiles('flatbuffers/CMakeLists.txt', 'flatbuffers/src/*') }}
+
+    - if: ${{ steps.cache-flatc.outputs.cache-hit == 'true' }}
+      name: Copy cached flatc
+      shell: bash
+      run: sudo cp flatc_build/flatc /usr/local/bin
+
+    - if: ${{ steps.cache-flatc.outputs.cache-hit != 'true' }}
+      name: Build flatc
+      shell: bash
+      run: |
+        sudo apt -y install cmake
+        mkdir flatc_build/
+        cd flatbuffers
+        cmake -B../flatc_build -G "Unix Makefiles" -DFLATBUFFERS_BUILD_FLATLIB=OFF -DFLATBUFFERS_BUILD_TESTS=OFF
+        sudo cmake --build ../flatc_build/ --target install --parallel $(nproc)
+    # End build `flatc`

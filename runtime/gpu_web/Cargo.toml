@@ -1,0 +1,40 @@
+[package]
+name = "gpu_web"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.65"
+bytemuck = { version = "1.12", features = ["derive", "zeroable_maybe_uninit"] }
+flatbuffers = "24.3.25"
+getrandom = { version = "0.2", features = ["js"] }
+glam = "0.29.2"
+glyph_brush = "0.7.8"
+image = { version = "0.25.1", default-features = false, features = [ "jpeg", "png" ] }
+lazy-regex = "3.3.0"
+log = "0.4.16"
+memoffset = "0.9.1"
+pollster = "0.3.0"
+rand = "0.8.5"
+strum = { version = "0.26.2", features = [ "derive" ]}
+wgpu = "23.0.1"
+
+event = { path = "../event" }
+game_asset = { path = "../game_asset", features = ["internal_features"]}
+game_ecs = { path = "../game_ecs" }
+game_module_macro = { path = "../game_module_macro" }
+gpu_common = { path = "../gpu_common" }
+platform = { path = "../platform" }
+platform_library_macro = { path = "../platform_library_macro" }
+platform_public = { path = "../platform_public" }
+snapshot = { path = "../snapshot" }
+void_public = { path = "../void_public" }
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+wgpu = { version = "23.0.1", features = ["webgl"] }
+
+[build-dependencies]
+dircpy = "0.3.19"
+
+build_tools = { path = "../build_tools" }
+codegen-rust = { path = "../../tools/codegen-rust" }

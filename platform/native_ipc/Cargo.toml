@@ -1,0 +1,17 @@
+[package]
+name = "native-ipc"
+version = "0.0.0"
+edition = "2024"
+
+[lib]
+
+[dependencies]
+flatbuffers = "24.3.25"
+libloading = "0.8.5"
+log = "0.4.16"
+tungstenite = "0.26"
+
+native_common = { path = "../native_common" }
+
+[build-dependencies]
+generate-flat-buffers = { path = "../../tools/generate_flat_buffers" }

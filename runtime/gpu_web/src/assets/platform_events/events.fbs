@@ -1,0 +1,31 @@
+table PlatformTextureFailed {
+    id: uint32;
+    asset_path: string;
+    error_reason: string;
+}
+
+enum PlatformFormatType : int {
+  Png = 0,
+  Jpeg = 1,
+}
+
+table PlatformTextureRead {
+    id: uint32;
+    asset_path: string;
+    width: uint32;
+    height: uint32;
+    format: PlatformFormatType;
+    data: [ubyte];
+    insert_in_atlas: bool;
+}
+
+table PlatformPipelineFailed {
+  id: uint32;
+  material_id: uint32;
+  error_reason: string;
+}
+
+struct PlatformPipelineRead {
+  id: uint32;
+  material_id: uint32;
+}

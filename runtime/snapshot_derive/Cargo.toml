@@ -1,0 +1,10 @@
+[package]
+name = "snapshot_derive"
+version = "0.0.0"
+edition = "2024"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+snapshot_derive_impl = { path = "../snapshot_derive_impl" }

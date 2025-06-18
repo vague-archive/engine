@@ -1,0 +1,66 @@
+include "../../../js/src/events.fbs";
+
+namespace editor_messages;
+
+struct ColorRGBA {
+  r: float; // r, g, b and a all 0 -> 1
+  g: float;
+  b: float;
+  a: float;
+}
+
+struct AspectRatio {
+  width: float;
+  height: float;
+}
+
+table Color {
+  value: ColorRGBA (required);
+}
+
+table ColorRender {
+  visible: bool;
+}
+
+// Hello world message that client can send as a test message
+table PingMessage {
+  timestamp: long;
+  message: string;
+}
+
+table ResponseMessage {
+  success: bool;
+  message: string;
+}
+
+table SpawnMessage {
+  transform: Transform (required);
+  color: Color (required);
+  color_render: ColorRender (required);
+}
+
+table AspectRatioMessage {
+  aspect_ratio: AspectRatio (required);
+}
+
+// Input types as separate messages.
+table KeyboardInputMessage {
+  key_code: Input.KeyCode;
+  is_pressed: bool;
+}
+
+// More input types (e.g. mouse) to come.
+
+union InputMessageType { KeyboardInputMessage }
+
+table InputMessage {
+  input: InputMessageType;
+}
+
+union MessageType { PingMessage, SpawnMessage, AspectRatioMessage, ResponseMessage, InputMessage }
+
+table Message {
+  message: MessageType (required);
+}
+
+root_type Message;

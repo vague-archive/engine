@@ -1,0 +1,16 @@
+[package]
+name = "physics"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+game_module_macro = { path = "../../runtime/game_module_macro" }
+game_entity = {path = "../../runtime/game_entity"}
+void_public = { path = "../../runtime/void_public" }
+snapshot = { path = "../../runtime/snapshot" }
+
+serde = { version = "1.0.219", features = ["serde_derive"] }
+serde_json = "1.0"
+
+[build-dependencies]
+build_tools = { path = "../../runtime/build_tools" }

@@ -1,0 +1,18 @@
+[package]
+name = "void_public"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+bytemuck = { version = "1.12", features = ["derive"] }
+flatbuffers = "24.3.25"
+glam = { version = "0.29.2", features = ["bytemuck", "serde"]}
+log = "0.4.16"
+
+game_module_macro = { path = "../game_module_macro" }
+snapshot = { path = "../snapshot" }
+serde = { version = "1.0.219", features = ["serde_derive"] }
+serde-big-array = "0.5.1"
+
+[dev-dependencies]
+assert_approx_eq = "1.1.0"

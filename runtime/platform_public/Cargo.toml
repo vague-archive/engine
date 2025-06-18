@@ -1,0 +1,9 @@
+[package]
+name = "platform_public"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+flatbuffers = "24.3.25"
+
+void_public = { path = "../void_public" }

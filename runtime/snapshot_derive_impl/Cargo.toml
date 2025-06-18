@@ -1,0 +1,9 @@
+[package]
+name = "snapshot_derive_impl"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+proc-macro2 = "1.0.89"
+quote = "1.0.37"
+syn = "2.0.87"

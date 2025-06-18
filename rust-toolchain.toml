@@ -1,0 +1,2 @@
+[toolchain]
+channel = "1.85.1" # When updating, check https://rust-lang.github.io/rustup-components-history/ for compatibility

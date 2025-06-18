@@ -1,0 +1,21 @@
+table PlatformTextFailed {
+  id: uint32;
+  asset_path: string;
+  error_reason: string;
+}
+
+enum PlatformTextFormatType : int {
+  Json = 0,
+  Toml = 1,
+  Csv = 2,
+  Text = 3,
+}
+
+table PlatformTextRead {
+  id: uint32;
+  asset_path: string;
+  full_disk_path: string;
+  format: PlatformTextFormatType;
+  raw_text: string;
+  watcher_set_up: bool;
+}

@@ -1,0 +1,49 @@
+[workspace]
+resolver = "2"
+
+# These are not built by default. They can optionally built by either:
+# - passing `-p <name>` to cargo commands
+# - changing directory and using cargo without specifying a project
+#
+# To work with all the members (ignoring `default-members`) use the `--workspace`
+# argument.
+members = [
+    "runtime/*",
+    "tools/*",
+    "extensions/*",
+    "modules/*",
+    "examples/*",
+    "platform/*",
+]
+
+# These are not built by default and cannot be optionally built by passing `-p
+# <name>`. (Though changing directory into an excluded directory does work).
+#
+# If there is a Rust project which should not be included by default, add it to
+# `members`, but not to `default-members`.
+#
+# This `exclude` section is more for things which really are not a Rust project.
+# i.e. they are other directories which the glob pattern will pick up, so we
+# need a way to exclude them.
+exclude = [
+]
+
+# These are built by default. Commands such as `cargo build` or `cargo test` and
+# so on will operate on all of these by default.
+#
+# The default members must also be listed in `members`. i.e. this is a subset of
+# the members in the virtual workspace (this Cargo.toml defines a "virtual
+# workspace").
+#
+# Individual members can optionally be used by either:
+# - passing `-p <name>` to cargo commands
+# - changing directory and using cargo without specifying a project
+#
+# To work with all the members (ignoring `default-members`) use the `--workspace`
+# argument.
+default-members = [
+    "platform/native",
+]
+
+[profile.dev]
+opt-level = 2

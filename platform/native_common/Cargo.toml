@@ -1,0 +1,25 @@
+[package]
+name = "native_common"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+deno_ast = "0.46.5"
+deno_core = "0.343.0"
+deno_resolver = "0.33.0"
+deno_runtime = { version = "0.210.0", features = ["transpile"] }
+flatbuffers = "24.3.25"
+gilrs = "0.10.7"
+libloading = "0.8.5"
+log = "0.4.16"
+pollster = "0.3"
+sys_traits = "0.1.9"
+tokio = "1.44.2"
+
+game_asset = { path = "../../runtime/game_asset" }
+game_engine = { path = "../../runtime/game_engine" }
+game_entity = { path = "../../runtime/game_entity" }
+gpu_web = { path = "../../runtime/gpu_web" }
+platform_public = { path = "../../runtime/platform_public" }
+text_native = { path = "../../extensions/text_native" }
+void_public_module = { path = "../../runtime/void_public_module" }

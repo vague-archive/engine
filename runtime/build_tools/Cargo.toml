@@ -1,0 +1,14 @@
+[package]
+name = "build_tools"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+convert_case = "0.6.0"
+json = "0.12.4"
+prettyplease = "0.2.29"
+proc-macro2 = { version = "1.0.93", features = ["span-locations"] }
+quote = "1.0.37"
+regex = "1.11.1"
+syn = { version = "2.0.87", features = ["full", "extra-traits", "parsing"] }
+colored = "2"

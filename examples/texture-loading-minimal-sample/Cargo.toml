@@ -1,0 +1,19 @@
+[package]
+name = "texture-loading-minimal-sample"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+game_asset = { path = "../../runtime/game_asset" }
+game_module_macro = { path = "../../runtime/game_module_macro" }
+gpu_web = { path = "../../runtime/gpu_web" }
+void_public = { path = "../../runtime/void_public" } 
+
+log = "0.4.16"
+
+[build-dependencies]
+build_tools = { path = "../../runtime/build_tools" }
+
+[lib]
+crate-type = ["cdylib"]
+bench = false

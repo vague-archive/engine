@@ -1,0 +1,209 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  cargo_fmt:
+    name: Cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up cargo toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+
+      - name: cargo fmt check
+        run: cargo fmt --check --all -- --config group_imports=StdExternalCrate,imports_granularity=Crate
+
+  cargo_clippy:
+    name: Cargo clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up cargo toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy
+
+      - name: Update apt
+        run: sudo apt update
+
+      - name: Set up libudev
+        run: sudo apt -y install libudev-dev
+
+      - name: ⎔ Set up bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 💾 Install dependencies
+        working-directory: js
+        run: bun install
+
+      - name: Build flatc
+        uses: ./.github/workflows/build-flatc
+
+      - name: Cache target folder
+        id: cache-cargo
+        uses: actions/cache@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-cargo-clippy-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Run clippy
+        run: cargo clippy --all
+
+  cargo_check_release:
+    name: Cargo check release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up cargo toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: clippy
+
+      - name: Update apt
+        run: sudo apt update
+
+      - name: Set up libudev
+        run: sudo apt -y install libudev-dev
+
+      - name: ⎔ Set up bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 💾 Install dependencies
+        working-directory: js
+        run: bun install
+
+      - name: Build flatc
+        uses: ./.github/workflows/build-flatc
+
+      - name: Cache target folder
+        id: cache-cargo
+        uses: actions/cache@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-cargo-check-release-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Run check
+        run: cargo check --all --release
+
+  cargo_test:
+    name: Cargo test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up cargo toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - name: Update apt
+        run: sudo apt update
+
+      - name: Set up libudev
+        run: sudo apt -y install libudev-dev
+
+      - name: ⎔ Set up bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 💾 Install dependencies
+        working-directory: js
+        run: bun install
+
+      # Build `flatc`
+      - name: Checkout flatc
+        uses: actions/checkout@v4
+        with:
+          repository: vaguevoid/flatbuffers
+          path: flatbuffers
+
+      - name: Cache flatc build
+        id: cache-flatc
+        uses: actions/cache@v4
+        with:
+          path: ./flatc_build/flatc
+          key: ${{ runner.os }}-flatc-${{ hashFiles('flatbuffers/CMakeLists.txt', 'flatbuffers/src/*') }}
+
+      - if: ${{ steps.cache-flatc.outputs.cache-hit == 'true' }}
+        name: Copy cached flatc
+        run: sudo cp flatc_build/flatc /usr/local/bin
+        shell: bash
+
+      - if: ${{ steps.cache-flatc.outputs.cache-hit != 'true' }}
+        name: Build flatc
+        run: |
+          sudo apt -y install cmake
+          mkdir flatc_build/
+          cd flatbuffers
+          cmake -B../flatc_build -G "Unix Makefiles" -DFLATBUFFERS_BUILD_FLATLIB=OFF -DFLATBUFFERS_BUILD_TESTS=OFF
+          sudo cmake --build ../flatc_build/ --target install --parallel $(nproc)
+        shell: bash
+      # End build `flatc`
+
+      - name: Cache target folder
+        id: cache-cargo
+        uses: actions/cache@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-cargo-test-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
+
+      - name: Cargo test
+        run: cargo test --workspace --no-fail-fast --all-features
+
+  biome:
+    name: 🐝 Biome
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Set up bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: 💾 Install dependencies
+        working-directory: js
+        run: bun install
+
+      - name: 🔬 Biome
+        working-directory: js
+        run: bun run biome:check
+
+  deno_fmt_lint:
+    name: 🦕 Deno format & lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Lint
+        working-directory: platform/native_common/js
+        run: deno lint
+
+      - name: Format Check
+        working-directory: platform/native_common/js
+        run: deno fmt --check

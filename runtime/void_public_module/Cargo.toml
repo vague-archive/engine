@@ -1,0 +1,16 @@
+[package]
+name = "void_public_module"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+log = "0.4.16"
+
+platform = { path = "../platform" }
+snapshot = { path = "../snapshot" }
+void_public = { path = "../void_public" }
+serde = "1.0.219"
+serde_json = "1.0.140"
+
+[build-dependencies]
+build_tools = { path = "../build_tools" }

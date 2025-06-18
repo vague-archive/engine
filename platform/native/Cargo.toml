@@ -1,0 +1,14 @@
+[package]
+name = "platform_native"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.37", features = ["derive"] }
+env_logger = "0.9.0"
+flatbuffers = "24.3.25"
+log = "0.4.16"
+pollster = "0.3"
+winit = "0.29"
+
+native_common = { path = "../native_common" }

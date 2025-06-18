@@ -1,0 +1,10 @@
+[package]
+name = "executor_native"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+core_affinity = "0.5.10"
+log = "0.4.16"
+
+platform = { path = "../platform" }

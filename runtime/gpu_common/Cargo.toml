@@ -1,0 +1,10 @@
+[package]
+name = "gpu_common"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+game_asset = { path = "../game_asset" }
+game_ecs = { path = "../game_ecs" }
+platform = { path = "../platform" }
+void_public = { path = "../void_public" }

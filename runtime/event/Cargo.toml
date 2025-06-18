@@ -1,0 +1,28 @@
+[package]
+name = "event"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+aligned-vec = "0.6.1"
+atomic_refcell = "0.1.13"
+bytemuck = "1.12"
+flatbuffers = "24.3.25"
+log = "0.4.16"
+
+game_entity = { path = "../game_entity" }
+platform = { path = "../platform" }
+snapshot = { path = "../snapshot", optional = true }
+void_public = { path = "../void_public" }
+num_enum = "0.7.3"
+
+[build-dependencies]
+build_tools = { path = "../build_tools" }
+generate-flat-buffers = { path = "../../tools/generate_flat_buffers" }
+
+[dev-dependencies]
+platform = { path = "../platform", features = ["test"]}
+
+[features]
+default = ["state_snapshots"]
+state_snapshots = ["dep:snapshot"]

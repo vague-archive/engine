@@ -1,0 +1,18 @@
+[package]
+name = "animation"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+bench = false
+
+[dependencies]
+anyhow = "1.0.65"
+game_module_macro = { path = "../../runtime/game_module_macro" }
+glam = "0.29.2"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+void_public = { path = "../../runtime/void_public" }
+
+[build-dependencies]
+build_tools = { path = "../../runtime/build_tools" }

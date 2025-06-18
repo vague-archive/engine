@@ -1,0 +1,13 @@
+get_world_offset = """
+return vec2f(0., 0.);
+"""
+
+get_fragment_color = """
+return textureSample(scene_color_texture, sampler_scene_color_texture, uv0.xy);
+"""
+
+[uniform_types]
+default_param = "f32"
+
+[texture_descs]
+scene_color_texture = "linear"

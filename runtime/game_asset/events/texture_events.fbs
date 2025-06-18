@@ -1,0 +1,5 @@
+table HandleTextureEventParameters {
+    id: uint32;
+    asset_path: string;
+    insert_in_atlas: bool;
+}

@@ -1,0 +1,10 @@
+get_world_offset = """
+return vec2f(0., 0.);
+"""
+
+get_fragment_color = """
+return textureSample(scene_color_texture, sampler_scene_color_texture, vec2f(uv0.x, 1.0 - uv0.y));
+"""
+
+[texture_descs]
+scene_color_texture = "linear"

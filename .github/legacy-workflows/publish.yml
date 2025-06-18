@@ -1,0 +1,51 @@
+name: Publish packages/engine to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'js/**'
+
+  workflow_dispatch:
+
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+jobs:
+  publish:
+    name: 📰 Publish to NPM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./js
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Bun install
+        run: bun install
+
+      - name: Build flatc
+        uses: ./.github/workflows/build-flatc
+
+      - name: Generate Flatbuffer Events
+        run: bun run gen:events
+
+      - name: Setup git
+        run: |
+          git checkout bun.lock
+          git config --global user.name 'Void CI'
+          git config --global user.email 'ci@void.dev'
+
+      - name: Publish
+        run: bun ./scripts/publish.ts

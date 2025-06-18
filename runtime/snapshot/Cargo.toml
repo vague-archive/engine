@@ -1,0 +1,11 @@
+[package]
+name = "snapshot"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+aligned-vec = "0.6.1"
+atomic_refcell = "0.1.13"
+glam = "0.29.2"
+
+snapshot_derive = { path = "../snapshot_derive" }

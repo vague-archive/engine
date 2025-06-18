@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Tooling IPC example</h1>
+        <p>
+            <button id="load_module">Load Module</button>
+            <input type="text" id="module_path">
+        </p>
+        <p>
+            <button id="list_modules">List Modules</button>
+            <p id="modules">(press List Modules button to get a list of modules)</p>
+        </p>
+        <p>
+            <button id="list_systems">List Systems</button>
+            <p id="systems">(press List Systems button to get a list of systems)</p>
+        </p>
+        <p>
+            <button id="engine_pause">Pause Engine</button>
+            <p id="tooling_engine_pause">Engine running</p>
+        </p>
+        <p>
+            <h2 id="tooling_callout">Not connected</h2>
+            <button id="tooling_open">Open</button>
+            <button id="tooling_close">Close</button>
+            <p id="tooling_elapsed"></p>
+        </p>
+</body>
+<script src="tooling_ipc_example.ts"></script>
+</html>

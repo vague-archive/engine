@@ -1,0 +1,43 @@
+{
+  "name": "@vaguevoid/engine",
+  "version": "0.4.0",
+  "description": "Void Engine Interfaces",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vaguevoid/engine.git"
+  },
+  "author": "Void Team <code@void.dev>",
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "scripts": {
+    "build": "bun build ./src/lib.ts --outdir ./dist && tsc --declaration --emitDeclarationOnly && shx cp ./src/events.fbs ./dist",
+    "biome:check": "biome check ./src",
+    "biome:write": "biome check ./src --write",
+    "ci:tsc": "tsc --noEmit",
+    "gen:events": "flatc --ts -o src/events/ src/events.fbs --gen-object-api --gen-name-strings"
+  },
+  "dependencies": {
+    "flatbuffers": "24.3.25"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.1.10",
+    "shx": "^0.3.4",
+    "typescript": "^5.2.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/lib.ts",
+      "types": "./src/lib.ts"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "type": "module"
+}

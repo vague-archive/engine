@@ -1,0 +1,135 @@
+//! # Tooling IPC (Inter Process Communication) flatbuffer schema.
+//!
+//! Some messages are sent from the Editor, over the Tooling IPC WebSocket to !
+//! the game (host), while others do the reverse: from game to editor (client).
+//! The comments are decorated with a [ToHost] or [ToClient] respectively.
+//!
+//! Some messages are closely associated with each other. In this file, line !
+//! spacing is used to group associated messages (It's easier to look below rather
+//! than explain this here, hopefully it's fairly intuitive).
+
+
+/// [ToHost]
+/// Ask the platform to load a game module and enable ECS systems therein.
+///
+/// A request to load an already loaded module is a no-op.
+///
+/// If the library (file) does not exist or is malformed (not actually a game
+/// module), the game may report an error or even crash.
+table LoadModule {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+}
+/// [ToClient]
+/// Once the module has been loaded, the module name is returned to the caller.
+table ModuleLoaded {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+
+  /// An internal string name for the module (result of calling `module_name()`
+  /// on library itself).
+  name: string;
+}
+
+
+/// [ToHost]
+/// TODO(https://www.notion.so/voidinc/Module-Unloading-1eafa7503dbe807ebca1e83993ee2cca):
+/// implement module reloading.
+table UnloadModule {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+}
+/// [ToClient]
+/// TODO(https://www.notion.so/voidinc/Module-Unloading-1eafa7503dbe807ebca1e83993ee2cca):
+/// implement module reloading.
+table ModuleUnloaded {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+
+  /// An internal string name for the module (result of calling `module_name()`
+  /// on library itself).
+  name: string;
+}
+
+/// [ToHost]
+///
+/// Request that module loaded again within the current game.
+/// TODO(https://www.notion.so/voidinc/Module-Unloading-1eafa7503dbe807ebca1e83993ee2cca):
+/// implement module reloading.
+table ReloadModule {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+}
+/// [ToClient]
+/// TODO(https://www.notion.so/voidinc/Module-Unloading-1eafa7503dbe807ebca1e83993ee2cca):
+/// implement module reloading.
+table ModuleReloaded {
+  /// A canonical full path to a module (dynamic library).
+  path: string;
+
+  /// An internal string name for the module (result of calling `module_name()`
+  /// on library itself).
+  name: string;
+}
+
+/// [ToHost]
+table ListModules {
+}
+/// Support type for `Modules`.
+table Module {
+  name: string (required);
+
+  /// A canonical full path to a module (dynamic library) or
+  /// null/None/not-present if the module is statically linked into the game.
+  path: string;
+}
+/// [ToClient]
+///
+/// A list of module information.
+table Modules {
+  list:[Module];
+}
+
+/// [ToHost]
+table ListSystems {
+}
+/// Support type for `Systems`.
+table System {
+  name: string (required);
+
+  /// Whether the system is currently enabled.
+  enabled: bool;
+}
+/// [ToClient]
+///
+/// A list of system information.
+table Systems {
+  list:[System];
+}
+
+/// [ToHost]
+///
+/// Ask the platform to call `engine.frame()` only if `paused` is false.
+///
+/// Unlike many other messages in this file, `EnginePause` has no response
+/// message.
+table EnginePause {
+  paused: bool;
+}
+
+/// [ToHost]
+/// The root (or wrapper, or envelope) of messages sent to the host. At the
+/// highest level, all messages sent to the host are of type `MessageToHost`.
+union IpcToHost { LoadModule, UnloadModule, ReloadModule, ListModules, ListSystems, EnginePause }
+table MessageToHost {
+ message: IpcToHost (required);
+}
+
+
+/// [ToClient]
+/// The root (or wrapper, or envelope) of messages sent to the client. At the
+/// highest level, all messages sent to the client are of type `MessageToClient`.
+union IpcToClient { ModuleLoaded, ModuleUnloaded, ModuleReloaded, Modules, Systems }
+table MessageToClient {
+  message: IpcToClient (required);
+}

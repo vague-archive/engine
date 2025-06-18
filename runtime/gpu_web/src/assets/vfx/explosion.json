@@ -1,0 +1,243 @@
+{
+	"effect_type": "TWO_D",
+	"emitters": [
+		{
+			"burst": 1,
+			"color": "d7a91d82",
+			"duration": 0,
+			"end_size": 0.809944789990536,
+			"fade_in_time": 0.1,
+			"fade_out_time": 0.52299531763638,
+			"glow": 1.89858390666955,
+			"gravity": 0,
+			"lifetime": 0.15873306961474,
+			"max_rotation_s": 0,
+			"mesh_name": "None",
+			"min_rotation_s": 0,
+			"name": "Emitter 0",
+			"orientation": "BILLBOARD",
+			"pattern": "CONE",
+			"rate": 0,
+			"renderer_type": "SPRITE",
+			"size_multiplier": 6.12514181380036,
+			"spawning_mode": "BURST",
+			"spawning_mode_BURST": true,
+			"spawning_mode_CONTINUOUS": false,
+			"speed": 0,
+			"spread": 0,
+			"start_rotation": 0,
+			"start_size": 0.00979766122190428,
+			"textures": [
+				{
+					"glow": 0,
+					"speed_x": 0,
+					"speed_y": 0,
+					"texture_name": "Glow",
+					"tile_x": 1,
+					"tile_y": 1
+				}
+			],
+			"trail_lifetime": 0,
+			"trail_width": 0.05,
+			"transform_position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_rotation": {
+				"w": 1,
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			}
+		},
+		{
+			"burst": 1,
+			"color": "d7a91dcf",
+			"duration": 0,
+			"end_size": 0.340695601235969,
+			"fade_in_time": 0.0799200809336248,
+			"fade_out_time": 0.57286745785627,
+			"glow": 2.84787586000433,
+			"gravity": 0,
+			"lifetime": 0.23809960442211,
+			"max_rotation_s": 53.110278599517,
+			"mesh_name": "None",
+			"min_rotation_s": -53.110278599517,
+			"name": "Emitter 1",
+			"orientation": "BILLBOARD",
+			"pattern": "CONE",
+			"rate": 0,
+			"renderer_type": "SPRITE",
+			"size_multiplier": 1,
+			"spawning_mode": "BURST",
+			"spawning_mode_BURST": true,
+			"spawning_mode_CONTINUOUS": false,
+			"speed": 0,
+			"spread": 0,
+			"start_rotation": 0,
+			"start_size": 0.99250870850848,
+			"textures": [
+				{
+					"glow": 0,
+					"speed_x": 0,
+					"speed_y": 0,
+					"texture_name": "Impact11",
+					"tile_x": 1,
+					"tile_y": 1
+				}
+			],
+			"trail_lifetime": 0,
+			"trail_width": 0.05,
+			"transform_position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_rotation": {
+				"w": 1,
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			}
+		},
+		{
+			"burst": 33,
+			"color": "d7a91dcf",
+			"duration": 0,
+			"end_size": 0,
+			"fade_in_time": 0.150485028342984,
+			"fade_out_time": 0.685886320993,
+			"glow": 2.84787586000433,
+			"gravity": -11.4784439001094,
+			"lifetime": 0.931623901174495,
+			"max_rotation_s": 0,
+			"mesh_name": "None",
+			"min_rotation_s": 0,
+			"name": "Emitter 2",
+			"orientation": "BILLBOARD",
+			"pattern": "SPHERE",
+			"rate": 0,
+			"renderer_type": "SPRITE",
+			"size_multiplier": 1,
+			"spawning_mode": "BURST",
+			"spawning_mode_BURST": true,
+			"spawning_mode_CONTINUOUS": false,
+			"speed": 4.16568094198596,
+			"spread": 70.7484869562536,
+			"start_rotation": 0,
+			"start_size": 0.00876051271972373,
+			"textures": [
+				{
+					"glow": 0,
+					"speed_x": 0,
+					"speed_y": 0,
+					"texture_name": "Glow",
+					"tile_x": 1,
+					"tile_y": 1
+				}
+			],
+			"trail_lifetime": 0,
+			"trail_width": 0.05,
+			"transform_position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_rotation": {
+				"w": 1,
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			}
+		},
+		{
+			"burst": 5,
+			"color": "373636fd",
+			"duration": 0,
+			"end_size": 1,
+			"fade_in_time": 0.100430271816189,
+			"fade_out_time": 0.54,
+			"glow": 0,
+			"gravity": 0.440515410827124,
+			"lifetime": 1.03684513332417,
+			"max_rotation_s": 58.1417274471239,
+			"mesh_name": "None",
+			"min_rotation_s": -30.5746271614074,
+			"name": "Emitter 3",
+			"orientation": "BILLBOARD",
+			"pattern": "SPHERE",
+			"rate": 0,
+			"renderer_type": "SPRITE",
+			"size_multiplier": 4.55849765397282,
+			"spawning_mode": "BURST",
+			"spawning_mode_BURST": true,
+			"spawning_mode_CONTINUOUS": false,
+			"speed": 0.775402822076772,
+			"spread": 83.2490677868861,
+			"start_rotation": 0,
+			"start_size": 0.400652432291474,
+			"textures": [
+				{
+					"glow": 0,
+					"speed_x": 0,
+					"speed_y": 0,
+					"texture_name": "Smoke7",
+					"tile_x": 1,
+					"tile_y": 1
+				},
+				{
+					"glow": 0,
+					"speed_x": 0.05,
+					"speed_y": 0.05,
+					"texture_name": "Noise71",
+					"tile_x": 2,
+					"tile_y": 2
+				},
+				{
+					"glow": 0,
+					"speed_x": 0.2,
+					"speed_y": -0.2,
+					"texture_name": "Glow2",
+					"tile_x": 0.5,
+					"tile_y": 0.5
+				}
+			],
+			"trail_lifetime": 0,
+			"trail_width": 0.05,
+			"transform_position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_rotation": {
+				"w": 1,
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"transform_scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			}
+		}
+	],
+	"file_type_version": 1,
+	"name": "Untitled Effect"
+}

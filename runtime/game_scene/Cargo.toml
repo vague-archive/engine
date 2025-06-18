@@ -1,0 +1,11 @@
+[package]
+name = "game_scene"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+json = "0.12.4"
+log = "0.4.16"
+
+event = { path = "../event" }
+void_public = { path = "../void_public" }

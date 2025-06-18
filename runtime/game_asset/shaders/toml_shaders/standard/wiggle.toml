@@ -1,0 +1,31 @@
+get_world_offset = """
+return vec2f(0., 0.);
+/*if (uv0.y > 0) {
+    return vec2f(32. * sin(scene_instance.wiggle_time), 0.0);
+} else {
+    return vec2f(32.0 * -sin(scene_instance.wiggle_time), 0.0);
+} */"""
+get_fragment_color = """
+var texcolor=textureSample(color_tex, s_diffuse, uv0.xy);
+var normalcolor=textureSample(normal_tex, s_diffuse, uv0.xy);
+let normal = normalcolor.xyz * 2.0 - 1.0;
+let sun_dir = vec3f(1.f, 0.0f, 1.f);
+let light_val = saturate(dot(normal, scene_instance.sun_dir.xyz));
+return vec4f(light_val * texcolor.x, light_val* texcolor.y, light_val* texcolor.z, 1.);"""
+
+[uniform_types]
+color_param_1 = { type = "vec4f", default = [1.0, 1.0, 0.5, 1.0] }
+sun_dir = "vec4f"
+color_src = { type = "array<vec4f, 3>", default = [
+    [1.0, 0.8, 0.6, 1.0], # Color 1
+    [0.5, 0.7, 0.9, 1.0], # Color 2
+    [0.1, 0.2, 0.3, 1.0], # Color 3
+] }
+color_dst = "array<vec4f, 3>"
+wiggle_time = { type = "f32", default = 1.2 }
+
+[texture_descs]
+color_tex = "nearest"
+normal_tex = "nearest"
+extra_tex_2 = "nearest"
+extra_tex_1 = "nearest"

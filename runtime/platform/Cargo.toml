@@ -1,0 +1,12 @@
+[package]
+name = "platform"
+version = "0.0.0"
+edition = "2024"
+
+[features]
+test = ["dep:pollster"]
+
+[dependencies]
+pollster = { version = "0.3.0", optional = true }
+
+void_public = { path = "../void_public" }

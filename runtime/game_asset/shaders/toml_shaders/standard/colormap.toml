@@ -1,0 +1,22 @@
+get_world_offset = """
+return vec2f(0., 0.);
+/*if (uv0.y > 0) { 
+    return vec2f(32. * sin(scene_instance.wiggle_time), 0.0); 
+} else { 
+    return vec2f(32.0 * -sin(scene_instance.wiggle_time), 0.0);
+}*/"""
+
+get_fragment_color = """
+var texcolor=textureSample(t_diffuse, s_diffuse, uv0.xy);
+for (var i = 0; i < 10; i++) {
+    if (length(texcolor.xyz - scene_instance.color_src[i].xyz) < 0.01) {
+        return scene_instance.color_dst[i];
+    }
+}
+return texcolor;"""
+
+[uniform_types]
+color_param_1 = "vec4f"
+color_src = "array<vec4f, 8>"
+color_dst = "array<vec4f, 8>"
+wiggle_time = "f32"

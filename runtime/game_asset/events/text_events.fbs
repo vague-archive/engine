@@ -1,0 +1,5 @@
+table HandleTextEventParameters {
+    id: uint32;
+    asset_path: string;
+    set_up_watcher: bool;
+}

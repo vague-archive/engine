@@ -1,0 +1,29 @@
+struct Despawn {
+  entity_id:uint64;
+}
+
+table LoadScene {
+  scene_json:string;
+}
+
+table RemoveComponents {
+  entity_id:uint64;
+  component_ids:[uint16];
+}
+
+table SetEntityLabel {
+  entity_id:uint64;
+  label:string;
+}
+
+struct SetParent {
+  entity_id:uint64;
+  /// `None` is encoded as `0`.
+  parent_id:uint64;
+  keep_world_space_transform:bool;
+}
+
+table SetSystemEnabled {
+  system_name:string;
+  enabled:bool;
+}

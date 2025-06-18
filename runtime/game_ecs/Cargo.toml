@@ -1,0 +1,19 @@
+[package]
+name = "game_ecs"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+atomic_refcell = "0.1.13"
+aligned-vec = "0.6.1"
+log = "0.4.16"
+
+event = { path = "../event" }
+game_entity = { path = "../game_entity" }
+platform = { path = "../platform" }
+snapshot = { path = "../snapshot", optional = true }
+void_public = { path = "../void_public" }
+
+[features]
+default = ["state_snapshots"]
+state_snapshots = ["dep:snapshot"]

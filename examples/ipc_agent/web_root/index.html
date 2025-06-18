@@ -1,0 +1,25 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>IPC example (Tip: open browser console to see output)</h1>
+        <p>
+            <button onclick="text_example()">Send text (see error)</button>
+            <button onclick="binary_example()">Send binary (it works)</button>
+        </p>
+        <p>
+            <button onclick="request_aspect()">Request aspect of game screen</button>
+            <p id="aspect">Screen aspect unknown</p>
+        </p>
+        <p>
+            <h2 id="callout">Not connected</h2>
+            <p id="elapsed"></p>
+            <button id="show_close" onclick="close_connection()">Close</button>
+        </p>
+        <p>
+            <button onclick="request_ignore()">Test Ignore Port</button>
+            The current connection will remain open after the host starts ignoring new connections. Trying to connect again will fail after the port is ignored.
+        </p>
+</body>
+<script src="websocket_example.js"></script>
+</html>

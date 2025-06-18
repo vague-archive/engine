@@ -1,0 +1,40 @@
+[package]
+name = "game_engine"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+atomic_refcell = "0.1.13"
+flatbuffers = "24.3.25"
+libloading = "0.8.0"
+log = "0.4.16"
+
+event = { path = "../event" }
+game_asset = { path = "../game_asset", features = ["internal_features"]}
+game_ecs = { path = "../game_ecs" }
+game_entity = { path = "../game_entity" }
+game_input_manager = { path = "../game_input_manager" }
+game_scene = { path = "../game_scene" }
+game_world = { path = "../game_world" }
+gpu_common = { path = "../gpu_common" }
+platform = { path = "../platform" }
+snapshot = { path = "../snapshot", optional = true }
+void_public = { path = "../void_public" }
+void_public_module = { path = "../void_public_module" }
+
+# Temporary for scene loading, will be removed with new asset workflow.
+gpu_web = { path = "../gpu_web" }
+
+# Temporary static linking of first-party modules, will be removed and
+# dynamically linked with a dependency manager.
+#
+# TODO(https://github.com/vaguevoid/engine/issues/414): resolve module
+# dependencies.
+animation = { path = "../../modules/animation" }
+editor = { path = "../../modules/editor" }
+ipc = { path = "../../modules/ipc" }
+physics = { path = "../../modules/physics" }
+
+[features]
+default = ["state_snapshots"]
+state_snapshots = ["dep:snapshot"]

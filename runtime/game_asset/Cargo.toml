@@ -1,0 +1,34 @@
+[package]
+name = "game_asset"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+ahash = "0.8.11"
+anyhow = "1.0.65"
+indexmap = "2.8.0"
+lazy-regex = "3.3.0"
+log = "0.4.16"
+glam = "0.29.2"
+flatbuffers = "24.3.25"
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0"
+strum = { version = "0.26.2", features = [ "derive" ] }
+toml = "0.8.19"
+
+game_module_macro = { path = "../game_module_macro" }
+platform = { path = "../platform" }
+snapshot = { path = "../snapshot" }
+void_public = { path = "../void_public" }
+void_public_module = { path = "../void_public_module" }
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+
+[build-dependencies]
+build_tools = { path = "../build_tools" }
+generate-flat-buffers = { path = "../../tools/generate_flat_buffers" }
+
+[features]
+default = []
+internal_features = []

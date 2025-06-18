@@ -1,0 +1,21 @@
+[package]
+name = "ipc-agent"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+bench = false
+
+[dependencies]
+game_module_macro = { path = "../../runtime/game_module_macro" }
+snapshot = { path = "../../runtime/snapshot" }
+void_public = { path = "../../runtime/void_public" }
+
+anyhow = "1.0.65"
+flatbuffers = "24.3.25"
+log = "0.4.16"
+
+[build-dependencies]
+build_tools = { path = "../../runtime/build_tools" }
+generate-flat-buffers = { path = "../../tools/generate_flat_buffers" }

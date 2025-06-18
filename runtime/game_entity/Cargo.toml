@@ -1,0 +1,12 @@
+[package]
+name = "game_entity"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+snapshot = { path = "../snapshot", optional = true }
+void_public = { path = "../void_public" }
+
+[features]
+default = ["state_snapshots"]
+state_snapshots = ["dep:snapshot"]

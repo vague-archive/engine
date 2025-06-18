@@ -1,0 +1,20 @@
+[package]
+name = "ipc-tester"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.37", features = ["derive"] }
+env_logger = "0.9.0"
+flatbuffers = "24.3.25"
+log = "0.4.16"
+pollster = "0.3"
+winit = "0.29"
+
+native_common = { path = "../../platform/native_common" }
+native-ipc = { path = "../../platform/native_ipc" }
+platform_native = { path = "../../platform/native" }
+void_public = { path = "../../runtime/void_public" }
+
+[build-dependencies]
+generate-flat-buffers = { path = "../../tools/generate_flat_buffers" }

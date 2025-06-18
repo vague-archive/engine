@@ -1,0 +1,25 @@
+[package]
+name = "text_native"
+version = "0.0.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+flatbuffers = "24.3.25"
+log = "0.4.16"
+serde = { version = "1.0.210", features = ["derive"] }
+serde-big-array = "0.5.1"
+serde_json = "1.0"
+
+game_asset = { path = "../../runtime/game_asset" }
+game_module_macro = { path = "../../runtime/game_module_macro" }
+platform = { path = "../../runtime/platform" }
+platform_library_macro = { path = "../../runtime/platform_library_macro" }
+platform_public = { path = "../../runtime/platform_public" }
+void_public = { path = "../../runtime/void_public" }
+
+[build-dependencies]
+build_tools = { path = "../../runtime/build_tools" }
+codegen-rust = { path = "../../tools/codegen-rust" }

@@ -1,0 +1,19 @@
+get_world_offset = """
+return vec2f(0., 0.);
+"""
+
+get_fragment_color = """
+var edge = 0.01;
+var center = textureSample(t_diffuse, s_diffuse, uv0.xy + vec2f(0., 0.));
+var left = textureSample(t_diffuse, s_diffuse, uv0.xy + vec2f(-edge, 0.));
+var right = textureSample(t_diffuse, s_diffuse, uv0.xy + vec2f(edge, 0.));
+var up = textureSample(t_diffuse, s_diffuse, uv0.xy + vec2f(0., edge));
+var down = textureSample(t_diffuse, s_diffuse, uv0.xy + vec2f(0., -edge));
+if (center.a == 0 && (right.a > 0 || left.a > 0 || up.a > 0 || down.a > 0)) {
+    return vec4f(0.0, 1.0, 1.0, 1.0);
+}
+return center;"""
+
+[uniform_types]
+wiggle_time = "f32"
+color_param_1 = "vec4f"

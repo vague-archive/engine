@@ -1,0 +1,15 @@
+[package]
+name = "game_world"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+log = "0.4.16"
+
+game_ecs = { path = "../game_ecs" }
+game_entity = { path = "../game_entity" }
+snapshot = { path = "../snapshot", optional = true }
+
+[features]
+default = ["state_snapshots"]
+state_snapshots = ["dep:snapshot"]
